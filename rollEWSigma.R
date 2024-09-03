@@ -17,7 +17,7 @@ if (!require(rugarch)){install.packages('rugarch')
  
 # roollEWSigma function: 
 # Función roollEWSigma:
-roollEWSigma=function(x,lambda,lastIsFirst=FALSE,ventana){
+rollEWSigma=function(x,lambda,lastIsFirst=FALSE,ventana){
   
   
 sigmaR=rollapply(x, width = ventana, FUN = function(x) funEWSigma(x,lambda,lastIsFirst), fill = NA, align = "right")
