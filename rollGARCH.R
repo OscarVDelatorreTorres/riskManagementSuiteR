@@ -11,8 +11,10 @@
 # Calcula la volatilidad en ventanas móviles de una serie de tiempo utilizando un modelo GARCH
 # dadas las especificaciones de ugarchspec y ugarchfit en el paquete ugarch.
 
-if (!require(zoo)){install.packages("zoo") library("zoo")} else {library("zoo")}
-if (!require(rugarch)){install.packages("rugarch") library("rugarch")} else {library("rugarch")}
+if (!require(zoo)){install.packages('zoo') 
+  library(zoo)} else {library('zoo')}
+if (!require(rugarch)){install.packages('rugarch') 
+  library(rugarch)} else {library('rugarch')}
  
 # rollGARCH function: 
 # Función rollGARCH:
