@@ -14,7 +14,7 @@
 if (!require(zoo)){install.packages("zoo") library("zoo")} else {library("zoo")}
 if (!require(rugarch)){install.packages("rugarch") library("rugarch")} else {library("rugarch")}
  
-# rollGARCH function:
+# rollGARCH function: 
 # Función rollGARCH:
 rollGARCH=function(x,model="sGARCH",LLF="norm",garchOrder=c(1,1),ventana=250,arma=c(0,0),include.mean = FALSE){
   
