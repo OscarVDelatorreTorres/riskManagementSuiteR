@@ -28,7 +28,7 @@ return(sigmaR)
 # Función auxiliar para la estimación de GARCH específica por fecha:
 funEWSigma=function(x,lambda,upDown=TRUE){
 
-  if (isTRUE(upDown=TRUE)){
+  if (isTRUE(upDown)){
     seqT=seq(to=nrow(rendimientosEjemplo1),from=1,by=1)-1
   } else {
     seqT=seq(from=nrow(rendimientosEjemplo1),to=1,by=-1)-1
