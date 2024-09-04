@@ -20,15 +20,15 @@ if (!require(rugarch)){install.packages('rugarch')
 rollEWSigma=function(x,lambda,lastIsFirst=FALSE,ventana){
   
   
-sigmaR=rollapply(x, width = ventana, FUN = function(x) funEWSigma(x,lambda,lastIsFirst), fill = NA, align = "right")
+sigmaR=rollapply(x, width = ventana, FUN = function(x) funEWSigma(x,lambda,upDown=TRUE), fill = NA, align = "right")
 return(sigmaR)
 }
 
 # date-specific GARCH estimation auxiliary function:
 # Función auxiliar para la estimación de GARCH específica por fecha:
-funEWSigma=function(x,lambda,lastIsFirst){
+funEWSigma=function(x,lambda,upDown=TRUE){
 
-  if (isFALSE(lastIsFirst)){
+  if (isTRUE(upDown=TRUE)){
     seqT=seq(to=nrow(rendimientosEjemplo1),from=1,by=1)-1
   } else {
     seqT=seq(from=nrow(rendimientosEjemplo1),to=1,by=-1)-1
