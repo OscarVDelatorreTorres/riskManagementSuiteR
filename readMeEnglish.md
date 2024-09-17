@@ -1,3 +1,4 @@
+[Versión en español](/README.md)
 
 # riskManagementSuite
 
