@@ -16,9 +16,12 @@ La misma comprende de las siguientes funciones:
 Las funciones en este repositorio se encuentran en fase beta y se contempla crear una librería de R. Para pdoer accedr a las mismas, se debe cargar en la memoria RAM lasmismas con la siguiente función:
 
 ```{r}
-source("")
+source("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/riskManagementSuiteFunctions.R")
 ```
+Después de correr el código anterior en su consola de R, deberá ver la función cargada en su ambiente de trabajo (si está trabajando en Rstudio).
 
-# Control de versiones
+## Ejemplos de uso
+
+## Control de versiones
 
 - V 1.0. 17 de septiembre de 2024.
