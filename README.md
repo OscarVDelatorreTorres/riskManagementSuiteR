@@ -1,5 +1,10 @@
 # riskManagementSuiteR
 [English version](/readMeEnglish.md)
 
-## English version{/englishVersion.md}
-This package of R functions for risk measurement and management is made for the data science, actuary, finance, Econometrics and related disciplines. It includes several function for risk measurement.
+# Presentación
+
+Este repositorio 
+
+# Control de versiones
+
+- V 1.0. 17 de septiembre de 2024.
