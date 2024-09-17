@@ -7,9 +7,11 @@ Este repositorio contiene algunas funciones útiles para cálculos relativos a l
 
 La misma comprende de las siguientes funciones:
 
-1. rollGARCH: Función que se utiliza para calcular un modelo GARCH(p,q), partiendo de una serie de tiempo y una longitud de ventana móvil apra su cálculo. La función es de utilidad para fines de backtesting univariado.
-2. rollEWMASigma: Función que se utiliza para calcular un la volatilidad con suavizamiento exponencial, dado un valor de suavizamiento $\lambda$ y partiendo de una serie de tiempo y una longitud de ventana móvil apra su cálculo. La función también es de utilidad para fines de backtesting univariado.
-3. CVaR: Esta función calcula el CVaR, dado un vector de 1 a $n$ desviaciones estándar, un vector de $n$ niveles de confianza, una función de probabilidad para el cálculo (gaussiana. t-Student o GED) y el número de periodos $t$ hacia adelante para el cálculo de la pérdida potencial. 
+1. funEWSigma: Función que se utiliza para calcular una la volatilidad con suavizamiento exponencial, dado un valor de suavizamiento $\lambda$ y partiendo de una serie de tiempo $x$.
+2. rollEWMASigma: Función que aplica la función anterior en una serie de tiempo, utilizando una ventana móvil de longitud previament determinada. Se utiliza para fines de backtest univariados.
+3. funGARCH: Función similar a funEWSigma que, a diferencia de la anterior, calcula una volatilidad GARCH definiendo múltiples parámetros y supuestos como es calcular un modelo ARIMA o ARFIMA, así como desviaciones estándar GARCH simétricas y asimétricas. Lo anterior de la mano de supuestos como emplear funciones de verosimilitud gaussianas, t-Student o GED tanto simétricas como asimétricas.
+4. rollGARCH: Función que se utiliza la función anterior para calcular modelos GARCH de manera móvil. Esto en una serie de tiempo y con una ventana móvil para los cálculos.
+5. CVaR: Esta función calcula el CVaR, dado un vector de 1 a $n$ desviaciones estándar, un vector de $n$ niveles de confianza, una función de probabilidad para el cálculo (gaussiana. t-Student o GED) y el número de periodos $t$ hacia adelante para el cálculo de la pérdida potencial. 
 
 ## Carga de funciones
 
