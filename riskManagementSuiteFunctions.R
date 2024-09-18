@@ -38,7 +38,7 @@ rollGARCH=function(x,model="sGARCH",LLF="norm",garchOrder=c(1,1),ventana=250,arm
 # funGARCH====
 # date-specific GARCH estimation auxiliary function:
 # Función auxiliar para la estimación de GARCH específica por fecha:
-funGARCH=function(x,model,LLF,garchOrder=c(1,1),arma=c(0,0),include.mean=FALSE){
+funGARCH=function(x,model="sGARCH",LLF="norm",garchOrder=c(1,1),arma=c(0,0),include.mean=FALSE){
   # Se crea el objeto del modelo GARCH:
   modeloGARCH=ugarchspec(variance.model = list(model = model, garchOrder = garchOrder),
                          mean.model = list(armaOrder = arma, include.mean = include.mean),
