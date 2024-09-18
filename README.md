@@ -10,8 +10,7 @@ La misma comprende de las siguientes funciones:
 1. funEWSigma: Función que se utiliza para calcular una la volatilidad con suavizamiento exponencial, dado un valor de suavizamiento $\lambda$ y partiendo de una serie de tiempo $x$.
 2. rollEWMASigma: Función que aplica la función anterior en una serie de tiempo, utilizando una ventana móvil de longitud previament determinada. Se utiliza para fines de backtest univariados.
 3. funGARCH: Función similar a funEWSigma que, a diferencia de la anterior, calcula una volatilidad GARCH definiendo múltiples parámetros y supuestos como es calcular un modelo ARIMA o ARFIMA, así como desviaciones estándar GARCH simétricas y asimétricas. Lo anterior de la mano de supuestos como emplear funciones de verosimilitud gaussianas, t-Student o GED tanto simétricas como asimétricas.
-4. rollGARCH: Función que se utiliza la función anterior para calcular modelos GARCH de manera móvil. Esto en una serie de tiempo y con una ventana móvil para los cálculos.
-5. CVaR: Esta función calcula el CVaR, dado un vector de 1 a $n$ desviaciones estándar, un vector de $n$ niveles de confianza, una función de probabilidad para el cálculo (gaussiana. t-Student o GED) y el número de periodos $t$ hacia adelante para el cálculo de la pérdida potencial. 
+4. rollGARCH: Función que se utiliza la función anterior para calcular modelos GARCH de manera móvil. Esto en una serie de tiempo y con una ventana móvil para los cálculos. 
 
 ## Carga de funciones
 
@@ -107,18 +106,6 @@ rollGARCH30=rollGARCH(returns$return,model="sGARCH",LLF="std",garchOrder=c(1,1),
 rollGARCH30
 ```
 
-### CVaR
-
-Esta función calcula el VaR conditional
-
-```{r}
-# Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
-
-#
-cVarCalc=CVaR(returns$return,confidenceVector=c(0,95,0.98),pdfFunct=c("norm","t","ged"),CVaRt=c(1,2),
-```
-
 ## Control de versiones
 
-- V 1.0. 17 de septiembre de 2024.
+- V 1.0. 17 de septiembre de 2024: Se calculan las desviaciones estándar con suavizamiento exponencial y con el modelo GARCH tanto en $t$ como de manera móvil desde $x_{t=v}$ a $x_T$ con $v<T$.
