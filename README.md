@@ -67,7 +67,7 @@ Esta función calcula la desviación estándar con suavizamiento exponencial en 
     - "sstd" para la LLF t-Student asimétrica.
     - "ged para la LLF GED simétrica.
     - "sged para la LLF GED asimétrica.
-- garchOrder: Es el número de rezagos en los términos ARCH y GARCH del modelo GARCH. La opción puede ser garchOrder=c(1,1) (opción por defecto) para especificar un rezago en el término aRCH y uno en el término GARCH.
+- garchOrder: Es el número de rezagos en los términos ARCH y GARCH del modelo GARCH. La opción puede ser garchOrder=c(1,1) (opción por defecto) para especificar un rezago en el término ARCH y uno en el término GARCH.
 - arma: Especifica el número de rezagos en el modelo ARMA a estimar. Si se desea calcular la desviación estándar de la media aritmética, se debe especificar arma:c(0,0) (la opción por defecto).
 - include.mean: Es el argumento que determina si el modelo GARCH debe incluir la media en los residuales del modelo a estimar. La opción por defecto es include.mean=FALSE.
 
@@ -91,7 +91,19 @@ returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskMa
 garchSigma=funGARCH(returns$return,LLF="std",garchOrder=c(1,1),arma=c(1,1),include.mean=FALSE)
 ```
 
-a
+### rollGARCH
+Esta función emplea la anterior para calcular la desviación estándar GARCH, empleando una ventana de tiempo fija $v$ para las realizaciones (observaciones) de una serie de tiempo $x_t$ que van desde $x_{t=v}$ a $x_T$. El siguiente ejemplo calcula la desviación estándar GARCH del ejemplo anterior para una ventana de tiempo de 30 días, emplando el ejemplo 1 de la función funGARCH
+
+```{r}
+# Carga los rendimientos del ejemplo (serie de tiempo):
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
+
+# Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
+rollGARCH30=rollGARCH(returns$return,model="sGARCH",LLF="std",garchOrder=c(1,1),ventana=30,arma=c(1,1),include.mean = FALSE,upDown=TRUE)
+
+# Imprime el vector resultante:
+rollEWSirollGARCH30gma30
+```
 
 ## Control de versiones
 
