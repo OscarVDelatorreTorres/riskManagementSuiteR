@@ -78,9 +78,9 @@ rollEWSigma=function(x,lambda,ventana,upDown=TRUE){
 funEWSigma=function(x,lambda,upDown=TRUE){
 
   if (isTRUE(upDown)){
-    seqT=seq(to=nrow(x),from=1,by=1)-1
+    seqT=seq(to=length(x),from=1,by=1)-1
   } else {
-    seqT=seq(from=nrow(x),to=1,by=-1)-1
+    seqT=seq(from=length(x),to=1,by=-1)-1
   }
 
   # Se eleva la lambda a la t-1, según la ecuación (3):
