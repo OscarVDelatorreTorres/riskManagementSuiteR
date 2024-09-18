@@ -33,7 +33,7 @@ Esta función calcula la desviación estándar con suavizamiento exponencial, da
 Ejemplo 1:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv)
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
 garchSigma=funEWSigma(returns,lambda=0.98,upDown=TRUE)
 ```
@@ -64,7 +64,7 @@ Dos ejemplos del uso de la función serían (con la serie de tiempo ya especific
 Ejemplo 1:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv)
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
 # Corre el modelo gARCH con los valores por defecto:
 garchSigma=funGARCH(returns)
 ```
@@ -72,7 +72,7 @@ garchSigma=funGARCH(returns)
 Ejemplo 2:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv)
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
 # Corre el modelo E-GARCH con función LLF t-Student y modelo ARMA (1,1) sin ser incluido en el cálculo del modelo GARCH:
 garchSigma=funGARCH(returns,LLF="std",garchOrder=c(1,1),arma=c(1,1),include.mean=FALSE)
 ```
