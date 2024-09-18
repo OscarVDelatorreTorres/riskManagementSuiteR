@@ -42,6 +42,7 @@ ewSigma=funEWSigma(returns$return,lambda=0.98,upDown=TRUE)
 
 Esta función emplea la anterior para calcular la desviación estándar con suavizamiento exponencial de manera móvil desde una ventana de tiempo fija $v$ para las realizaciones (observaciones) de una serie de tiempo $x_t$ que van desde $x_{t=v}$ a $x_T$. El siguiente ejemplo calcula la desviación estándar con suavizamiento exponencial del ejemplo anterior para una ventana de tiempo de 30 días
 
+Ejemplo 1:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
 returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
@@ -94,6 +95,7 @@ garchSigma=funGARCH(returns$return,LLF="std",garchOrder=c(1,1),arma=c(1,1),inclu
 ### rollGARCH
 Esta función emplea la anterior para calcular la desviación estándar GARCH, empleando una ventana de tiempo fija $v$ para las realizaciones (observaciones) de una serie de tiempo $x_t$ que van desde $x_{t=v}$ a $x_T$. El siguiente ejemplo calcula la desviación estándar GARCH del ejemplo anterior para una ventana de tiempo de 30 días, emplando el ejemplo 1 de la función funGARCH
 
+Ejemplo 1:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
 returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
@@ -103,6 +105,18 @@ rollGARCH30=rollGARCH(returns$return,model="sGARCH",LLF="std",garchOrder=c(1,1),
 
 # Imprime el vector resultante:
 rollGARCH30
+```
+
+### CVaR
+
+Esta función calcula el VaR conditional
+
+```{r}
+# Carga los rendimientos del ejemplo (serie de tiempo):
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
+
+#
+cVarCalc=CVaR(returns$return,confidenceVector=c(0,95,0.98),pdfFunct=c("norm","t","ged"),CVaRt=c(1,2),
 ```
 
 ## Control de versiones
