@@ -35,7 +35,7 @@ Ejemplo 1:
 # Carga los rendimientos del ejemplo (serie de tiempo):
 returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
-garchSigma=funEWSigma(returns,lambda=0.98,upDown=TRUE)
+ewSigma=funEWSigma(returns,lambda=0.98,upDown=TRUE)
 ```
 
 ### funGARCH
