@@ -48,11 +48,21 @@ Esta función devuelve solamente la desviación estándar GARCH calculada en $t$
 
 Dos ejemplos del uso de la función serían (con la serie de tiempo ya especificada previamente):
 
+Ejemplo 1:
 ```{r}
-
-garchSigma=funGARCH(x)
+# Carga los rendimientos del ejemplo (serie de tiempo):
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv)
+# Corre el modelo gARCH con los valores por defecto:
+garchSigma=funGARCH(returns)
 ```
-Para estimar 
+
+Ejemplo 2:
+```{r}
+# Carga los rendimientos del ejemplo (serie de tiempo):
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv)
+# Corre el modelo E-GARCH con función LLF t-Student y modelo ARMA (1,1) sin ser incluido en el cálculo del modelo GARCH:
+garchSigma=funGARCH(returns,LLF="std",garchOrder=c(1,1),arma=c(1,1),include.mean=FALSE)
+```
 
 a
 
