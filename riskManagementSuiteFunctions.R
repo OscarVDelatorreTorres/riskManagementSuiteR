@@ -90,7 +90,7 @@ funEWSigma=function(x,lambda,upDown=TRUE){
   rendimientosCuadraticos=(x^2)*lambdaT
   rendimientosSuavizados=rendimientosCuadraticos*lambdaT
   # Se calcula la volatilidad exponencial:
-  sigmaExponencial=sqrt((1-lambdaS)*sum(rendimientosSuavizados))
+  sigmaExponencial=sqrt((1-lambda)*sum(rendimientosSuavizados))
 
   return(sigmaExponencial)
 
