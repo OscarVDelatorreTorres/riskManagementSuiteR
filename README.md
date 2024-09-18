@@ -47,6 +47,8 @@ Esta función emplea la anterior para calcular la desviación estándar con suav
 returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
 rollEWSigma30=rollEWSigma(returns$return,lambda=0.98,ventana=30,upDown=TRUE)
+# Imprime el vector resultante:
+rollEWSigma30
 ```
 
 
