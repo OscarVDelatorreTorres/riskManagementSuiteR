@@ -51,7 +51,6 @@ funGARCH=function(x,model,LLF,garchOrder=c(1,1),arma=c(0,0),include.mean=FALSE){
 
 }
 
-
 # rollEWSigma====
 # Author/Autor: Dr. Oscar V. De la Torre-Torres https://oscardelatorretorres.com
 
@@ -79,9 +78,9 @@ rollEWSigma=function(x,lambda,ventana,upDown=TRUE){
 funEWSigma=function(x,lambda,upDown=TRUE){
 
   if (isTRUE(upDown)){
-    seqT=seq(to=nrow(rendimientosEjemplo1),from=1,by=1)-1
+    seqT=seq(to=nrow(x),from=1,by=1)-1
   } else {
-    seqT=seq(from=nrow(rendimientosEjemplo1),to=1,by=-1)-1
+    seqT=seq(from=nrow(x),to=1,by=-1)-1
   }
 
   # Se eleva la lambda a la t-1, según la ecuación (3):
