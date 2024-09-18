@@ -84,7 +84,7 @@ funEWSigma=function(x,lambda,upDown=TRUE){
   }
 
   # Se eleva la lambda a la t-1, según la ecuación (3):
-  lambdaT=lambdaS^seqT
+  lambdaT=lambda^seqT
 
   # Se multiplica la lambda suavizada exponencialmente a lo largo de t por los rendimientos al cuadrado:
   rendimientosCuadraticos=(x^2)*lambdaT
