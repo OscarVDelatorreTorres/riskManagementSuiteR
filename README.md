@@ -102,7 +102,7 @@ returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskMa
 rollGARCH30=rollGARCH(returns$return,model="sGARCH",LLF="std",garchOrder=c(1,1),ventana=30,arma=c(1,1),include.mean = FALSE,upDown=TRUE)
 
 # Imprime el vector resultante:
-rollEWSirollGARCH30gma30
+rollGARCH30
 ```
 
 ## Control de versiones
