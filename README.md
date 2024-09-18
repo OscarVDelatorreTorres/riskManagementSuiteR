@@ -44,6 +44,16 @@ Esta función calcula la desviación estándar con suavizamiento exponencial en 
 - arma: Especifica el número de rezagos en el modelo ARMA a estimar. Si se desea calcular la desviación estándar de la media aritmética, se debe especificar arma:c(0,0) (la opción por defecto).
 - include.mean: Es el argumento que determina si el modelo GARCH debe incluir la media en los residuales del modelo a estimar. La opción por defecto es include.mean=FALSE.
 
+Esta función devuelve solamente la desviación estándar GARCH calculada en $t$.
+
+Dos ejemplos del uso de la función serían (con la serie de tiempo ya especificada previamente):
+
+```{r}
+
+garchSigma=funGARCH(x)
+```
+Para estimar 
+
 a
 
 ## Control de versiones
