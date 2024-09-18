@@ -22,7 +22,6 @@ if (!require(doParallel)){install.packages('doParallel')
 # Calcula la volatilidad en ventanas móviles de una serie de tiempo utilizando un modelo GARCH
 # dadas las especificaciones de ugarchspec y ugarchfit en el paquete ugarch.
 
-# rollGARCH function:
 # Función rollGARCH:
 rollGARCH=function(x,model="sGARCH",LLF="norm",garchOrder=c(1,1),ventana=250,arma=c(0,0),include.mean = FALSE,upDown=TRUE){
 
@@ -36,9 +35,10 @@ rollGARCH=function(x,model="sGARCH",LLF="norm",garchOrder=c(1,1),ventana=250,arm
   return(sigmaR)
 }
 
+# funGARCH====
 # date-specific GARCH estimation auxiliary function:
 # Función auxiliar para la estimación de GARCH específica por fecha:
-funGARCH=function(x,model,LLF,garchOrder,arma,include.mean){
+funGARCH=function(x,model,LLF,garchOrder=c(1,1),arma=c(0,0),include.mean=FALSE){
   # Se crea el objeto del modelo GARCH:
   modeloGARCH=ugarchspec(variance.model = list(model = model, garchOrder = garchOrder),
                          mean.model = list(armaOrder = arma, include.mean = include.mean),
@@ -74,6 +74,7 @@ rollEWSigma=function(x,lambda,ventana,upDown=TRUE){
   return(sigmaR)
 }
 
+# funEWSigma====
 # date-specific GARCH estimation auxiliary function:
 # Función auxiliar para la estimación de GARCH específica por fecha:
 funEWSigma=function(x,lambda,upDown=TRUE){
