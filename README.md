@@ -66,7 +66,7 @@ Ejemplo 1:
 # Carga los rendimientos del ejemplo (serie de tiempo):
 returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
 # Corre el modelo gARCH con los valores por defecto:
-garchSigma=funGARCH(returns)
+garchSigma=funGARCH(returns$return)
 ```
 
 Ejemplo 2:
