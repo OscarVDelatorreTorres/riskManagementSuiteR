@@ -23,6 +23,28 @@ source("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSu
 Después de correr el código anterior en su consola de R, deberá ver la función cargada en su ambiente de trabajo (si está trabajando en Rstudio).
 
 ## Ejemplos de uso
+### funEWSigma
+
+### funGARCH
+Esta función calcula la desviación estándar con suavizamiento exponencial en $t$. La misma tiene los siguientes argumentos de entrada:
+- x: la serie de tiempo a la que se le calculará la volatilidad deseada.
+- model: Es un objeto tipo spec para especificar el modelo GARCH a estimar. las opciones son
+    - "sGARCH" para modelos GARCH simétricos (esta es la opción por defecto).
+    - "eGARCH" para modelos EGARCH.
+    - "gjrGARCH" para el modelo GJR-GARCH
+    - Entre otras opciones de la librería [rugarch](https://cran.r-project.org/web/packages/rugarch/rugarch.pdf)
+- LLF: Se refiere a la función de verosimilitud o probabilidad en los residuales del modelo GARCH a utilizar. Las opciones también son heredadas de la librería rugarch y las opciones más comunes son:
+    - "norm" para LLF gaussiana simétrica (esta es la opción por defecto).
+    - "snorm" para LLF gaussiana asimétrica.
+    - "std" para la LLF t-Student simétrica.
+    - "sstd" para la LLF t-Student asimétrica.
+    - "ged para la LLF GED simétrica.
+    - "sged para la LLF GED asimétrica.
+- garchOrder: Es el número de rezagos en los términos ARCH y GARCH del modelo GARCH. La opción puede ser garchOrder=c(1,1) (opción por defecto) para especificar un rezago en el término aRCH y uno en el término GARCH.
+- arma: Especifica el número de rezagos en el modelo ARMA a estimar. Si se desea calcular la desviación estándar de la media aritmética, se debe especificar arma:c(0,0) (la opción por defecto).
+- include.mean: Es el argumento que determina si el modelo GARCH debe incluir la media en los residuales del modelo a estimar. La opción por defecto es include.mean=FALSE.
+
+a
 
 ## Control de versiones
 
