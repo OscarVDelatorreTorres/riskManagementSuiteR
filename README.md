@@ -24,6 +24,19 @@ Después de correr el código anterior en su consola de R, deberá ver la funci�
 
 ## Ejemplos de uso
 ### funEWSigma
+Esta función calcula la desviación estándar con suavizamiento exponencial, dado un parámetro de suavizamiento $\lambda$. Solo requiere tres argumentos:
+
+- x: la serie de tiempo a la que se le calculará la volatilidad deseada.
+- lambda: el valor o coeficiente de suavizamiento exponencia que debe ser un número decimal mayor a cero y menor a 1.
+- upDown: un valor lógico (TRUE o FALSE). El valor por defecto es TRUE e indica que la serie de tiempo está ordenada de los valores más antiguos (arriba) a los más reciente (abajo). En caso de tener un orden contrario, la serie de tiempo del objeto x (valores recientes arriba y antiguoa abajo) se debe especificar como FALSE este argumento. El valor por defecto es TRUE.
+
+Ejemplo 1:
+```{r}
+# Carga los rendimientos del ejemplo (serie de tiempo):
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
+# Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
+garchSigma=funEWSigma(returns,lambda=0.98,upDown=TRUE)
+```
 
 ### funGARCH
 Esta función calcula la desviación estándar con suavizamiento exponencial en $t$. La misma tiene los siguientes argumentos de entrada:
@@ -43,6 +56,26 @@ Esta función calcula la desviación estándar con suavizamiento exponencial en 
 - garchOrder: Es el número de rezagos en los términos ARCH y GARCH del modelo GARCH. La opción puede ser garchOrder=c(1,1) (opción por defecto) para especificar un rezago en el término aRCH y uno en el término GARCH.
 - arma: Especifica el número de rezagos en el modelo ARMA a estimar. Si se desea calcular la desviación estándar de la media aritmética, se debe especificar arma:c(0,0) (la opción por defecto).
 - include.mean: Es el argumento que determina si el modelo GARCH debe incluir la media en los residuales del modelo a estimar. La opción por defecto es include.mean=FALSE.
+
+Esta función devuelve solamente la desviación estándar GARCH calculada en $t$.
+
+Dos ejemplos del uso de la función serían (con la serie de tiempo ya especificada previamente):
+
+Ejemplo 1:
+```{r}
+# Carga los rendimientos del ejemplo (serie de tiempo):
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
+# Corre el modelo gARCH con los valores por defecto:
+garchSigma=funGARCH(returns)
+```
+
+Ejemplo 2:
+```{r}
+# Carga los rendimientos del ejemplo (serie de tiempo):
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
+# Corre el modelo E-GARCH con función LLF t-Student y modelo ARMA (1,1) sin ser incluido en el cálculo del modelo GARCH:
+garchSigma=funGARCH(returns,LLF="std",garchOrder=c(1,1),arma=c(1,1),include.mean=FALSE)
+```
 
 a
 
