@@ -38,6 +38,18 @@ returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskMa
 ewSigma=funEWSigma(returns$return,lambda=0.98,upDown=TRUE)
 ```
 
+### rollEWMASigma
+
+Esta función emplea la anterior para calcular la desviación estándar con suavizamiento exponencial de manera móvil desde una ventana de tiempo fija $v$ para las realizaciones (observaciones) de una serie de tiempo $x_t$ que van desde $x_{t=v}$ a $x_T$. El siguiente ejemplo calcula la desviación estándar con suavizamiento exponencial del ejemplo anterior para una ventana de tiempo de 30 días
+
+```{r}
+# Carga los rendimientos del ejemplo (serie de tiempo):
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
+# Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
+rollEWSigma30=rollEWSigma(returns$return,lambda=0.98,ventana=30,upDown=TRUE)
+```
+
+
 ### funGARCH
 Esta función calcula la desviación estándar con suavizamiento exponencial en $t$. La misma tiene los siguientes argumentos de entrada:
 - x: la serie de tiempo a la que se le calculará la volatilidad deseada.
@@ -74,7 +86,7 @@ Ejemplo 2:
 # Carga los rendimientos del ejemplo (serie de tiempo):
 returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
 # Corre el modelo E-GARCH con función LLF t-Student y modelo ARMA (1,1) sin ser incluido en el cálculo del modelo GARCH:
-garchSigma=funGARCH(returns,LLF="std",garchOrder=c(1,1),arma=c(1,1),include.mean=FALSE)
+garchSigma=funGARCH(returns$return,LLF="std",garchOrder=c(1,1),arma=c(1,1),include.mean=FALSE)
 ```
 
 a
