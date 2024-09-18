@@ -24,6 +24,19 @@ Después de correr el código anterior en su consola de R, deberá ver la funci�
 
 ## Ejemplos de uso
 ### funEWSigma
+Esta función calcula la desviación estándar con suavizamiento exponencial, dado un parámetro de suavizamiento $\lambda$. Solo requiere tres argumentos:
+
+- x: la serie de tiempo a la que se le calculará la volatilidad deseada.
+- lambda: el valor o coeficiente de suavizamiento exponencia que debe ser un número decimal mayor a cero y menor a 1.
+- upDown: un valor lógico (TRUE o FALSE). El valor por defecto es TRUE e indica que la serie de tiempo está ordenada de los valores más antiguos (arriba) a los más reciente (abajo). En caso de tener un orden contrario, la serie de tiempo del objeto x (valores recientes arriba y antiguoa abajo) se debe especificar como FALSE este argumento. El valor por defecto es TRUE.
+
+Ejemplo 1:
+```{r}
+# Carga los rendimientos del ejemplo (serie de tiempo):
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv)
+# Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
+garchSigma=funEWSigma(returns,lambda=0.98,upDown=TRUE)
+```
 
 ### funGARCH
 Esta función calcula la desviación estándar con suavizamiento exponencial en $t$. La misma tiene los siguientes argumentos de entrada:
