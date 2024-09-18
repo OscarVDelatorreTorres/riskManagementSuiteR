@@ -105,10 +105,11 @@ funEWSigma=function(x,lambda,upDown=TRUE){
 # This function estimates CVaR, given an estimated standard deviations vector and a confidence interval
 # one
 
-CVaR=function(riskVector,confidenceVector,pdfFunct,CVaRt,Tlength){
-library(fGarch)
+CVaR=function(riskVector,confidenceVector,pdfFunct,CVaRt){
 cat("\f")
 print("Setting CVaR parallel configurations up...")
+
+Tlength=length(riskVector)
 
   # parallel setup:
   #Setup backend to use many processors
