@@ -52,7 +52,6 @@ funGARCH=function(x,model,LLF,garchOrder=c(1,1),arma=c(0,0),include.mean=FALSE){
 }
 
 
-
 # rollEWSigma====
 # Author/Autor: Dr. Oscar V. De la Torre-Torres https://oscardelatorretorres.com
 
