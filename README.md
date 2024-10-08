@@ -32,7 +32,7 @@ Esta función calcula la desviación estándar con suavizamiento exponencial, da
 Ejemplo 1:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
 ewSigma=funEWSigma(returns$return,lambda=0.98,upDown=TRUE)
 ```
@@ -44,7 +44,7 @@ Esta función emplea la anterior para calcular la desviación estándar con suav
 Ejemplo 1:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
 rollEWSigma30=rollEWSigma(returns$return,lambda=0.98,ventana=30,upDown=TRUE)
 # Imprime el vector resultante:
