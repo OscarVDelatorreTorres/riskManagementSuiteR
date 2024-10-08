@@ -34,7 +34,7 @@ Ejemplo 1:
 # Carga los rendimientos del ejemplo (serie de tiempo):
 returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
-ewSigma=funEWSigma(returns$return,lambda=0.98,upDown=TRUE)
+ewSigma=funEWSigma(returns$MXX,lambda=0.98,upDown=TRUE)
 ```
 
 ### rollEWMASigma
@@ -46,7 +46,7 @@ Ejemplo 1:
 # Carga los rendimientos del ejemplo (serie de tiempo):
 returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
-rollEWSigma30=rollEWSigma(returns$return,lambda=0.98,ventana=30,upDown=TRUE)
+rollEWSigma30=rollEWSigma(returns$MXX,lambda=0.98,ventana=30,upDown=TRUE)
 # Imprime el vector resultante:
 rollEWSigma30
 ```
@@ -80,7 +80,7 @@ Ejemplo 1:
 # Carga los rendimientos del ejemplo (serie de tiempo):
 returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 # Corre el modelo gARCH con los valores por defecto:
-garchSigma=funGARCH(returns$return)
+garchSigma=funGARCH(returns$MXX)
 ```
 
 Ejemplo 2:
@@ -88,7 +88,7 @@ Ejemplo 2:
 # Carga los rendimientos del ejemplo (serie de tiempo):
 returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 # Corre el modelo E-GARCH con función LLF t-Student y modelo ARMA (1,1) sin ser incluido en el cálculo del modelo GARCH:
-garchSigma=funGARCH(returns$return,LLF="std",garchOrder=c(1,1),arma=c(1,1),include.mean=FALSE)
+garchSigma=funGARCH(returns$MXX,LLF="std",garchOrder=c(1,1),arma=c(1,1),include.mean=FALSE)
 ```
 
 ### rollGARCH
@@ -100,7 +100,7 @@ Ejemplo 1:
 returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
-rollGARCH30=rollGARCH(returns$return,model="sGARCH",LLF="std",garchOrder=c(1,1),ventana=30,arma=c(1,1),include.mean = FALSE,upDown=TRUE)
+rollGARCH30=rollGARCH(returns$MXX,model="sGARCH",LLF="std",garchOrder=c(1,1),ventana=30,arma=c(1,1),include.mean = FALSE,upDown=TRUE)
 
 # Imprime el vector resultante:
 rollGARCH30
