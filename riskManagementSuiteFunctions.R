@@ -195,11 +195,11 @@ VaR=function(M,sigma,confidence,pdfFunct,VaRt,tsLength=0){
   
   switch(pdfFunct,
          "norm"={
-           var=qnorm(pValsSeq,0,1)*sigma*sqrt(CVaRt)
+           var=qnorm(pValsSeq,0,1)*sigma*sqrt(VaRt)
          },
          "t"={
            nu=tsLength-1
-           var=qt(pValsSeq,nu)*sigma*sqrt(CVaRt)
+           var=qt(pValsSeq,nu)*sigma*sqrt(VaRt)
          },
          "ged"={
            nu=1
