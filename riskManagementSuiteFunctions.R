@@ -132,20 +132,18 @@ print("Setting CVaR parallel configurations up...")
 
 # CVaR:
       alphaCVaR=1-confidence
-
-      pValsSeq=seq(from=0,to=alphaCVaR,by=0.00001)
+      lowZi=-1/sigma
+      dlowZi=pnorm(lowZi,0,1)
+      pValsSeq=seq(from=dlowZi,to=alphaCVaR,by=0.001)
       pValsSeq=pValsSeq[-1]
 
       switch(pdfFunct,
              "norm"={
-               zVal=qnorm(pValsSeq,0,1)
-               cvar=sum((zVal*sigma)*sqrt(CVaRt)*(1-pValsSeq))*(1/alphaCVaR)
+               cvar=(sum((qnorm(pValsSeq,0,1)*sigma)*pValsSeq)*(1/alphaCVaR))*sqrt(CVaRt)
              },
              "t"={
                nu=tsLength-1
-               tVal=qt(pValsSeq,nu)
-               cvar=sum((tVal*sigma)*sqrt(CVaRt)*(1-pValsSeq))*(1/alphaCVaR)   
-
+               cvar=(sum((qt(pValsSeq,nu)*sigma)*pValsSeq)*(1/alphaCVaR))*sqrt(CVaRt)
              },
              "ged"={
                nu=1
@@ -154,7 +152,7 @@ print("Setting CVaR parallel configurations up...")
                q = lambda * (2 * qgamma((abs(2 * pValsSeq - 1)), 1/nu))^(1/nu)
                gedVal = q * sign(2 * pValsSeq - 1) * 1 + 0
 
-               cvar=sum((gedVal*sigma)*sqrt(CVaRt)*(1-pValsSeq))*(1/alphaCVaR)
+               cvar=(sum((gedVal*sigma)*pValsSeq)*(1/alphaCVaR))*sqrt(CVaRt)
              }
       )
   cvar=M*cvar
