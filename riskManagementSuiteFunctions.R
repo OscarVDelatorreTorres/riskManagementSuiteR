@@ -117,11 +117,6 @@ switch(pdfFunct,"t"={
 }
 )
 
-  
-#function:
-cat("\f")
-print("Setting CVaR parallel configurations up...")
-
   cat("\f")
   print("Estimating CVaR...")
 
@@ -164,3 +159,63 @@ print(paste0("The CVaR at ",confidence*100,"% of confidence, for an ammount of $
 
 }
 
+# VaR====
+
+# Author/Autor: Dr. Oscar V. De la Torre-Torres https://oscardelatorretorres.com
+
+# VaR v 1.0: 2024-09-03
+
+# This function estimates VaR, given an estimated standard deviations vector and a confidence interval
+# one
+
+VaR=function(M,sigma,confidence,pdfFunct,CVaRt,tsLength=0){
+  
+  # errors:
+  switch(pdfFunct,"t"={
+    if (tsLength<1){
+      stop("The length of the time series must (argument tsLength) be greater than zero when pdfFunct is t. \n tsLength is the length of the time series used for degrees of freedom calculation.")
+    }
+  }
+  )
+  
+  cat("\f")
+  print("Estimating CVaR...")
+  
+  cat("\f")
+  print(paste0("Estimating with ",pdfFunct,"pdf CVaR at ",confidence*100,"% of confidence..."))
+  
+# VaR estimation===
+  
+  # VaR:
+  alphaCVaR=1-confidence
+  lowZi=-1/sigma
+  dlowZi=pnorm(lowZi,0,1)
+  pValsSeq=seq(from=dlowZi,to=alphaCVaR,by=0.001)
+  pValsSeq=pValsSeq[-1]
+  
+  switch(pdfFunct,
+         "norm"={
+           cvar=qnorm(pValsSeq,0,1)*sigma*sqrt(CVaRt)
+         },
+         "t"={
+           nu=tsLength-1
+           cvar=qt(pValsSeq,nu)*sigma*sqrt(CVaRt)
+         },
+         "ged"={
+           nu=1
+           # q GED estimation:
+           lambda = sqrt(2^(-2/nu) * gamma(1/nu)/gamma(3/nu))
+           q = lambda * (2 * qgamma((abs(2 * pValsSeq - 1)), 1/nu))^(1/nu)
+           gedVal = q * sign(2 * pValsSeq - 1) * 1 + 0
+           
+           cvar=gedVal*sigma*sqrt(CVaRt)
+         }
+  )
+  var=M*var
+  
+  cat("\f")
+  print(paste0("The VaR at ",confidence*100,"% of confidence, for an ammount of $",M," is: ",cvar))  
+  # output objects:
+  return(cvar)
+  
+}
