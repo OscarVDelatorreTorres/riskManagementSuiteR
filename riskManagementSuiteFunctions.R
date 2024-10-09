@@ -2,6 +2,8 @@
 # Related libraries:
 if (!require(zoo)){install.packages('zoo')
   library(zoo)} else {library('zoo')}
+if (!require(Rdpack)){install.packages('Rdpack')
+  library(Rdpack)} else {library('rugarch')}
 if (!require(rugarch)){install.packages('rugarch')
   library(rugarch)} else {library('rugarch')}
 if (!require(fGarch)){install.packages('fGarch')
@@ -105,52 +107,45 @@ funEWSigma=function(x,lambda,upDown=TRUE){
 # This function estimates CVaR, given an estimated standard deviations vector and a confidence interval
 # one
 
-CVaR=function(riskVector,confidenceVector,pdfFunct,CVaRt){
+CVaR=function(M,sigma,confidence,pdfFunct,CVaRt,tsLength=0){
+  
+# errors:
+switch(pdfFunct,"t"={
+  if (tsLength<1){
+    stop("The length of the time series must (argument tsLength) be greater than zero when pdfFunct is t. \n tsLength is the length of the time series used for degrees of freedom calculation.")
+  }
+}
+)
+
+  
+#function:
 cat("\f")
 print("Setting CVaR parallel configurations up...")
-
-Tlength=length(riskVector)
-
-  # parallel setup:
-  #Setup backend to use many processors
-  totalCores = detectCores()
-
-  #Leave one core to avoid overload your computer
-  cluster <- makeCluster(totalCores[1]-1)
-  registerDoParallel(cluster)
 
   cat("\f")
   print("Estimating CVaR...")
 
-  CVaRTable=as.data.frame(matrix(0,length(riskVector),length(confidenceVector)))
-  colnames(CVaRTable)=paste0("CVaR-",confidenceVector)
-
-  for (a in 1:length(confidenceVector)){
-
-
     cat("\f")
-    print(paste0("Estimating with ",pdfFunct,"pdf CVaR at ",confidenceVector[a]*100,"% of confidence..."))
+    print(paste0("Estimating with ",pdfFunct,"pdf CVaR at ",confidence*100,"% of confidence..."))
 
 # CVaR estimation===
 
-    CVarVector=foreach(b=1:length(riskVector),.combine=c)%dopar%{
-#      parallelCVaR(riskVector[b],confidenceVector[a],pdfFunct,CVaRt,Tlength)
-#---
-# parallel CVaR:
-      alphaCVaR=1-confidenceVector[a]
+# CVaR:
+      alphaCVaR=1-confidence
 
-      pValsSeq=seq(from=0,to=alphaCVaR,by=0.000001)
+      pValsSeq=seq(from=0,to=alphaCVaR,by=0.00001)
       pValsSeq=pValsSeq[-1]
 
       switch(pdfFunct,
              "norm"={
                zVal=qnorm(pValsSeq,0,1)
-               cvar=mean((zVal*riskVector[b])*sqrt(CVaRt))
+               cvar=sum((zVal*sigma)*sqrt(CVaRt)*(1-pValsSeq))*(1/alphaCVaR)
              },
              "t"={
-               nu=Tlength-1
+               nu=tsLength-1
                tVal=qt(pValsSeq,nu)
-               cvar=mean((tVal*riskVector[b])*sqrt(CVaRt))
+               cvar=sum((tVal*sigma)*sqrt(CVaRt)*(1-pValsSeq))*(1/alphaCVaR)   
+
              },
              "ged"={
                nu=1
@@ -159,24 +154,15 @@ Tlength=length(riskVector)
                q = lambda * (2 * qgamma((abs(2 * pValsSeq - 1)), 1/nu))^(1/nu)
                gedVal = q * sign(2 * pValsSeq - 1) * 1 + 0
 
-               cvar=mean((gedVal*riskVector[b])*sqrt(CVaRt))
+               cvar=sum((gedVal*sigma)*sqrt(CVaRt)*(1-pValsSeq))*(1/alphaCVaR)
              }
       )
+  cvar=M*cvar
 
-#---
-    }
-
-# CVaR table===
-    CVaRTable[,a]=CVarVector
-     # a loop ends here:
-  }
-
+  cat("\f")
+print(paste0("The CVaR at ",confidence*100,"% of confidence, for an ammount of $",M," is: ",cvar))  
   # output objects:
-  return(CVaRTable)
-
-  #Stopping parallel cluster
- stopCluster(cluster)
-
+  return(cvar)
 
 }
 
