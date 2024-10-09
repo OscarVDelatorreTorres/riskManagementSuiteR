@@ -121,7 +121,9 @@ confianza=0.95
 CVaR(M=1000,sigma=Sigma,confidence=confianza,pdfFunct="norm",CVaRt=t)
 ```
 
-Ejemplo 2 con la volatilidad GARCH previamente calculada y función de probabilidad t-Student para una inversión de $1,000.00 en el IPC, al 95% de confianza y para un horizonte de 1 día:
+Ejemplo 2 con la volatilidad GARCH previamente calculada y función de probabilidad t-Student para una inversión de $1,000.00 en el IPC, al 95% de confianza y para un horizonte de 1 día
+**Nota:** Para el caso específico de del CVaR con función de probabilidad t-Student debe especificarse la longitud de la serie de tiempo del valor estudiado. Esto se especifica e el argumento `tsLength` De lo contrario, la función generará un error. El argumento `tsLength` es opcional cuando la fución de probabilidad es gaussiana o GED:
+
 ```{r}
 # Corre los cálculos del CVaR:
 M=1000
