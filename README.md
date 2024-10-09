@@ -103,9 +103,38 @@ rollGARCH30
 
 ## CVaR
 
-Esta función se puede emplear para calcular el CVaR para un monto (argumento M), dada una desviación estándar (argumento sigma), un nivel de confianza deseados (argumento confidence) y se puede estimar para una función de probabilidad gaussiana (argumento confidenceVector="norm"), t-Student (argumento confidenceVector="t") o para una distribución generalizada por errores (GED, argumento confidenceVector="ged"). La salida es una tabla con el CVaR de las sigmas y niveles de confianza deseados. El siguiente ejemplo ilustra el cálculo del CVaR para las volatilidades ewSigma y garchSigma previas con niveles de confianza de 95% (0.95)  98% (0.98):
+Esta función se puede emplear para calcular el CVaR para un monto (argumento M), dada una desviación estándar (argumento sigma), un nivel de confianza deseados (argumento confidence) y se puede estimar para una función de probabilidad gaussiana (argumento confidenceVector="norm"), t-Student (argumento confidenceVector="t") o para una distribución generalizada por errores (GED, argumento confidenceVector="ged"). La salida es una tabla con el VaR de la sigma y nivel de confianza deseado. El siguiente ejemplo ilustra el cálculo del CVaR para las volatilidades ewSigma y garchSigma previas con niveles de confianza de 95% (0.95):
 
-Ejemplo 1 con la volatilidad exponencialmente suavizada (la calculada previamente) y función de probabilidad gaussiana para una inversión de $1,000.00 en el IPC, al 95% de confianza y para un horizonte de 1 día:
+Ejemplo 1 con la volatilidad exponencialmente suavizada (la calculada previamente) y función de probabilidad gaussiana para una inversión de $1,000.00 en el NAFTRACHISHRS, al 95% de confianza y para un horizonte de 1 día:
+
+```{r}
+# Corre los cálculos del VaR:
+M=1000
+Sigma=ewSigma
+t=1
+confianza=0.95
+# Se calcula el VaR:
+VaR(M=1000,sigma=Sigma,confidence=confianza,pdfFunct="norm",CVaRt=t)
+```
+
+Ejemplo 2 con la volatilidad GARCH previamente calculada y función de probabilidad t-Student para una inversión de $1,000.00 en el NATRACIHSRS, al 95% de confianza y para un horizonte de 1 día
+**Nota:** Para el caso específico de del CVaR con función de probabilidad t-Student debe especificarse la longitud de la serie de tiempo del valor estudiado. Esto se especifica e el argumento `tsLength` De lo contrario, la función generará un error. El argumento `tsLength` es opcional cuando la fución de probabilidad es gaussiana o GED:
+
+```{r}
+# Corre los cálculos del VaR:
+M=1000
+Sigma=garchSigma
+t=1
+confianza=0.95
+# Se calcula el CVaR:
+VaR(M=1000,sigma=Sigma,confidence=confianza,pdfFunct="t",CVaRt=t,tsLength=100)
+```
+
+## CVaR
+
+Esta función es análoga a la función VaR anterior, con la diferencia de que estima el VaR condicional o CVaR. Dicho esto, los ejemplos anteriores se extienden a esta función.
+
+Ejemplo 1 con la volatilidad exponencialmente suavizada (la calculada previamente) y función de probabilidad gaussiana para una inversión de $1,000.00 en el NATRACIHSRS, al 95% de confianza y para un horizonte de 1 día:
 ```{r}
 # Corre los cálculos del CVaR:
 M=1000
@@ -116,7 +145,7 @@ confianza=0.95
 CVaR(M=1000,sigma=Sigma,confidence=confianza,pdfFunct="norm",CVaRt=t)
 ```
 
-Ejemplo 2 con la volatilidad GARCH previamente calculada y función de probabilidad t-Student para una inversión de $1,000.00 en el IPC, al 95% de confianza y para un horizonte de 1 día
+Ejemplo 2 con la volatilidad GARCH previamente calculada y función de probabilidad t-Student para una inversión de $1,000.00 en el NATRACIHSRS, al 95% de confianza y para un horizonte de 1 día
 **Nota:** Para el caso específico de del CVaR con función de probabilidad t-Student debe especificarse la longitud de la serie de tiempo del valor estudiado. Esto se especifica e el argumento `tsLength` De lo contrario, la función generará un error. El argumento `tsLength` es opcional cuando la fución de probabilidad es gaussiana o GED:
 
 ```{r}
