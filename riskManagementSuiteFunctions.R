@@ -179,7 +179,7 @@ VaR=function(M,sigma,confidence,pdfFunct,VaRt,tsLength=0){
   )
   
   cat("\f")
-  print("Estimating CVaR...")
+  print("Estimating VaR...")
   
   cat("\f")
   print(paste0("Estimating with ",pdfFunct,"pdf VaR at ",confidence*100,"% of confidence..."))
