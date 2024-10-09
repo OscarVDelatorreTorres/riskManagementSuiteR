@@ -126,7 +126,7 @@ Sigma=garchSigma
 t=1
 confianza=0.95
 # Se calcula el CVaR:
-CVaR(M=1000,sigma=Sigma,confidence=confianza,pdfFunct="t",CVaRt=t)
+CVaR(M=1000,sigma=Sigma,confidence=confianza,pdfFunct="t",CVaRt=t,tsLength=100)
 ```
 
 ## Control de versiones
