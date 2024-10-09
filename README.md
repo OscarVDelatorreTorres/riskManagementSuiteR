@@ -29,12 +29,14 @@ Esta función calcula la desviación estándar con suavizamiento exponencial, da
 - lambda: el valor o coeficiente de suavizamiento exponencia que debe ser un número decimal mayor a cero y menor a 1.
 - upDown: un valor lógico (TRUE o FALSE). El valor por defecto es TRUE e indica que la serie de tiempo está ordenada de los valores más antiguos (arriba) a los más reciente (abajo). En caso de tener un orden contrario, la serie de tiempo del objeto x (valores recientes arriba y antiguoa abajo) se debe especificar como FALSE este argumento. El valor por defecto es TRUE.
 
+Para ejemplificar el uso de las funciones, se asume primero una posición de $1,000.00 en el fondo NAFTRACISHRS.
+
 Ejemplo 1:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContSemanal.csv")
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
-ewSigma=funEWSigma(returns$MXX,lambda=0.98,upDown=TRUE)
+ewSigma=funEWSigma(returns$NAFTRACISHRS.MX,lambda=0.98,upDown=TRUE)
 ```
 
 ### rollEWMASigma
@@ -44,9 +46,8 @@ Esta función emplea la anterior para calcular la desviación estándar con suav
 Ejemplo 1:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
-rollEWSigma30=rollEWSigma(returns$MXX,lambda=0.98,ventana=30,upDown=TRUE)
+rollEWSigma30=rollEWSigma(returns$NAFTRACISHRS,lambda=0.98,ventana=30,upDown=TRUE)
 # Imprime el vector resultante:
 rollEWSigma30
 ```
@@ -77,18 +78,14 @@ Dos ejemplos del uso de la función serían (con la serie de tiempo ya especific
 
 Ejemplo 1:
 ```{r}
-# Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 # Corre el modelo gARCH con los valores por defecto:
-garchSigma=funGARCH(returns$MXX)
+garchSigma=funGARCH(returns$NAFTRACISHRS)
 ```
 
 Ejemplo 2:
 ```{r}
-# Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 # Corre el modelo E-GARCH con función LLF t-Student y modelo ARMA (1,1) sin ser incluido en el cálculo del modelo GARCH:
-garchSigma=funGARCH(returns$MXX,LLF="std",garchOrder=c(1,1),arma=c(1,1),include.mean=FALSE)
+garchSigma=funGARCH(returns$NAFTRACISHRS,LLF="std",garchOrder=c(1,1),arma=c(1,1),include.mean=FALSE)
 ```
 
 ### rollGARCH
@@ -96,11 +93,9 @@ Esta función emplea la anterior para calcular la desviación estándar GARCH, e
 
 Ejemplo 1:
 ```{r}
-# Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
-rollGARCH30=rollGARCH(returns$MXX,model="sGARCH",LLF="std",garchOrder=c(1,1),ventana=30,arma=c(1,1),include.mean = FALSE,upDown=TRUE)
+rollGARCH30=rollGARCH(returns$NAFTRACISHRS,model="sGARCH",LLF="std",garchOrder=c(1,1),ventana=30,arma=c(1,1),include.mean = FALSE,upDown=TRUE)
 
 # Imprime el vector resultante:
 rollGARCH30
