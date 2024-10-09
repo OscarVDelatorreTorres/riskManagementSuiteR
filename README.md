@@ -32,9 +32,9 @@ Esta función calcula la desviación estándar con suavizamiento exponencial, da
 Ejemplo 1:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
-ewSigma=funEWSigma(returns$return,lambda=0.98,upDown=TRUE)
+ewSigma=funEWSigma(returns$MXX,lambda=0.98,upDown=TRUE)
 ```
 
 ### rollEWMASigma
@@ -44,9 +44,9 @@ Esta función emplea la anterior para calcular la desviación estándar con suav
 Ejemplo 1:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
-rollEWSigma30=rollEWSigma(returns$return,lambda=0.98,ventana=30,upDown=TRUE)
+rollEWSigma30=rollEWSigma(returns$MXX,lambda=0.98,ventana=30,upDown=TRUE)
 # Imprime el vector resultante:
 rollEWSigma30
 ```
@@ -78,17 +78,17 @@ Dos ejemplos del uso de la función serían (con la serie de tiempo ya especific
 Ejemplo 1:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 # Corre el modelo gARCH con los valores por defecto:
-garchSigma=funGARCH(returns$return)
+garchSigma=funGARCH(returns$MXX)
 ```
 
 Ejemplo 2:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 # Corre el modelo E-GARCH con función LLF t-Student y modelo ARMA (1,1) sin ser incluido en el cálculo del modelo GARCH:
-garchSigma=funGARCH(returns$return,LLF="std",garchOrder=c(1,1),arma=c(1,1),include.mean=FALSE)
+garchSigma=funGARCH(returns$MXX,LLF="std",garchOrder=c(1,1),arma=c(1,1),include.mean=FALSE)
 ```
 
 ### rollGARCH
@@ -97,13 +97,41 @@ Esta función emplea la anterior para calcular la desviación estándar GARCH, e
 Ejemplo 1:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/main/returns.csv")
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContDiario.csv")
 
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
-rollGARCH30=rollGARCH(returns$return,model="sGARCH",LLF="std",garchOrder=c(1,1),ventana=30,arma=c(1,1),include.mean = FALSE,upDown=TRUE)
+rollGARCH30=rollGARCH(returns$MXX,model="sGARCH",LLF="std",garchOrder=c(1,1),ventana=30,arma=c(1,1),include.mean = FALSE,upDown=TRUE)
 
 # Imprime el vector resultante:
 rollGARCH30
+```
+
+## CVaR
+
+Esta función se puede emplear para calcular el CVaR para un monto (argumento M), dada una desviación estándar (argumento sigma), un nivel de confianza deseados (argumento confidence) y se puede estimar para una función de probabilidad gaussiana (argumento confidenceVector="norm"), t-Student (argumento confidenceVector="t") o para una distribución generalizada por errores (GED, argumento confidenceVector="ged"). La salida es una tabla con el CVaR de las sigmas y niveles de confianza deseados. El siguiente ejemplo ilustra el cálculo del CVaR para las volatilidades ewSigma y garchSigma previas con niveles de confianza de 95% (0.95)  98% (0.98):
+
+Ejemplo 1 con la volatilidad exponencialmente suavizada (la calculada previamente) y función de probabilidad gaussiana para una inversión de $1,000.00 en el IPC, al 95% de confianza y para un horizonte de 1 día:
+```{r}
+# Corre los cálculos del CVaR:
+M=1000
+Sigma=ewSigma
+t=1
+confianza=0.95
+# Se calcula el CVaR:
+CVaR(M=1000,sigma=Sigma,confidence=confianza,pdfFunct="norm",CVaRt=t)
+```
+
+Ejemplo 2 con la volatilidad GARCH previamente calculada y función de probabilidad t-Student para una inversión de $1,000.00 en el IPC, al 95% de confianza y para un horizonte de 1 día
+**Nota:** Para el caso específico de del CVaR con función de probabilidad t-Student debe especificarse la longitud de la serie de tiempo del valor estudiado. Esto se especifica e el argumento `tsLength` De lo contrario, la función generará un error. El argumento `tsLength` es opcional cuando la fución de probabilidad es gaussiana o GED:
+
+```{r}
+# Corre los cálculos del CVaR:
+M=1000
+Sigma=garchSigma
+t=1
+confianza=0.95
+# Se calcula el CVaR:
+CVaR(M=1000,sigma=Sigma,confidence=confianza,pdfFunct="t",CVaRt=t)
 ```
 
 ## Control de versiones
