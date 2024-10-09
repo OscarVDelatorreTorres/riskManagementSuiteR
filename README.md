@@ -34,7 +34,7 @@ Para ejemplificar el uso de las funciones, se asume primero una posición de $1,
 Ejemplo 1:
 ```{r}
 # Carga los rendimientos del ejemplo (serie de tiempo):
-returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/renContSemanal.csv")
+returns=read.csv("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/riskManagementSuiteFunctions.R")
 # Corre el modelo sigmaEWMA con un nivel de suavizamiento exponencial de 0.98 y con una serie de tiempo con los valores antiguos arriba y los recientes abajo:
 ewSigma=funEWSigma(returns$NAFTRACISHRS.MX,lambda=0.98,upDown=TRUE)
 ```
