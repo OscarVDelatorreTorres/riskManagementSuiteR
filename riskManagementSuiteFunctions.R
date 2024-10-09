@@ -214,7 +214,7 @@ VaR=function(M,sigma,confidence,pdfFunct,VaRt,tsLength=0){
   var=M*var
   
   cat("\f")
-  print(paste0("The VaR at ",confidence*100,"% of confidence, for an ammount of $",M," is: ",cvar))  
+  print(paste0("The VaR at ",confidence*100,"% of confidence, for an ammount of $",M," is: ",var))  
   # output objects:
   return(var)
   
