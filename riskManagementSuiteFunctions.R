@@ -188,25 +188,21 @@ VaR=function(M,sigma,confidence,pdfFunct,VaRt,tsLength=0){
   
   # VaR:
   alphaVaR=1-confidence
-  lowZi=-1/sigma
-  dlowZi=pnorm(lowZi,0,1)
-  pValsSeq=seq(from=dlowZi,to=alphaVaR,by=0.001)
-  pValsSeq=pValsSeq[-1]
   
   switch(pdfFunct,
          "norm"={
-           var=qnorm(pValsSeq,0,1)*sigma*sqrt(VaRt)
+           var=qnorm(alphaVaR,0,1)*sigma*sqrt(VaRt)
          },
          "t"={
            nu=tsLength-1
-           var=qt(pValsSeq,nu)*sigma*sqrt(VaRt)
+           var=qt(alphaVaR,nu)*sigma*sqrt(VaRt)
          },
          "ged"={
            nu=1
            # q GED estimation:
            lambda = sqrt(2^(-2/nu) * gamma(1/nu)/gamma(3/nu))
-           q = lambda * (2 * qgamma((abs(2 * pValsSeq - 1)), 1/nu))^(1/nu)
-           gedVal = q * sign(2 * pValsSeq - 1) * 1 + 0
+           q = lambda * (2 * qgamma((abs(2 * alphaVaR - 1)), 1/nu))^(1/nu)
+           gedVal = q * sign(2 * alphaVaR - 1) * 1 + 0
            
            var=gedVal*sigma*sqrt(VaRt)
          }
