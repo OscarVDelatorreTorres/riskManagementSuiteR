@@ -114,7 +114,7 @@ Ejemplo 1 con volatilidad exponencialmente suavizada y función de probabilidad 
 ```{r}
 # Corre los cálculos del CVaR:
 M=1000
-Sigma=rollEWSigma30
+Sigma=ewSigma
 t=1
 confianza=0.95
 # Se calcula el CVaR:
