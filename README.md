@@ -161,3 +161,4 @@ CVaR(M=1000,sigma=Sigma,confidence=confianza,pdfFunct="t",CVaRt=t,tsLength=100)
 ## Control de versiones
 
 - V 1.0. 17 de septiembre de 2024: Se calculan las desviaciones estándar con suavizamiento exponencial y con el modelo GARCH tanto en $t$ como de manera móvil desde $x_{t=v}$ a $x_T$ con $v<T$.
+- V 1.1. 09 de octubre de 2024: Se agregaron las funciones de cálculo del VaR y del CVaR con la media, desviación estándar, nivel de confiaza, periodo de cálculo del VaR o CVaR ($t$) conocidos.
