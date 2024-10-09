@@ -106,6 +106,21 @@ rollGARCH30=rollGARCH(returns$MXX,model="sGARCH",LLF="std",garchOrder=c(1,1),ven
 rollGARCH30
 ```
 
+## CVaR
+
+Esta función se puede emplear para calcular el CVaR para un monto (argumento M), dada una desviación estándar (argumento sigma), un nivel de confianza deseados (argumento confidence) y se puede estimar para una función de probabilidad gaussiana (argumento confidenceVector="norm"), t-Student (argumento confidenceVector="t") o para una distribución generalizada por errores (GED, argumento confidenceVector="ged"). La salida es una tabla con el CVaR de las sigmas y niveles de confianza deseados. El siguiente ejemplo ilustra el cálculo del CVaR para las volatilidades ewSigma y garchSigma previas con niveles de confianza de 95% (0.95)  98% (0.98):
+
+Ejemplo 1 con volatilidad exponencialmente suavizada y función de probabilidad gaussiana para una inversión de $1,000.00 en el IPC, 95% de confianza y para un horizonte de 1 día:
+```{r}
+# Corre los cálculos del CVaR:
+M=1000
+Sigma=rollEWSigma30
+t=1
+confianza=0.95
+# Se calcula el CVaR:
+CVaR(M=1000,sigma=Sigma,confidence=confianza,pdfFunct="norm",CVaRt=t)
+```
+
 ## Control de versiones
 
 - V 1.0. 17 de septiembre de 2024: Se calculan las desviaciones estándar con suavizamiento exponencial y con el modelo GARCH tanto en $t$ como de manera móvil desde $x_{t=v}$ a $x_T$ con $v<T$.
