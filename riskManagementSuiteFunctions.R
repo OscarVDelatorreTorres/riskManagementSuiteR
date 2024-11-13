@@ -127,18 +127,19 @@ switch(pdfFunct,"t"={
 
 # CVaR:
       alphaCVaR=1-confidence
-      lowZi=-1/sigma
-      dlowZi=pnorm(lowZi,0,1)
-      pValsSeq=seq(from=dlowZi,to=alphaCVaR,by=0.001)
+      #lowZi=-1/sigma
+      pValsSeq=seq(from=0,to=alphaCVaR,by=0.0001)
       pValsSeq=pValsSeq[-1]
 
       switch(pdfFunct,
              "norm"={
-               cvar=(sum((qnorm(pValsSeq,0,1)*sigma)*pValsSeq)*(1/confidence))*sqrt(CVaRt)
+               qpdf=qnorm(pValsSeq,0,1)
+               cvar=mean((qpdf*sigma)*sqrt(CVaRt))
+               
              },
              "t"={
                nu=tsLength-1
-               cvar=(sum((qt(pValsSeq,nu)*sigma)*pValsSeq)*(1/confidence))*sqrt(CVaRt)
+               cvar=mean((qt(pValsSeq,nu)*sigma)*sqrt(CVaRt))
              },
              "ged"={
                nu=1
@@ -147,7 +148,7 @@ switch(pdfFunct,"t"={
                q = lambda * (2 * qgamma((abs(2 * pValsSeq - 1)), 1/nu))^(1/nu)
                gedVal = q * sign(2 * pValsSeq - 1) * 1 + 0
 
-               cvar=(sum((gedVal*sigma)*pValsSeq)*(1/confidence))*sqrt(CVaRt)
+               cvar=mean((gedVal*sigma)*sqrt(CVaRt))
              }
       )
   cvar=M*cvar
