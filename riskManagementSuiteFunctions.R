@@ -98,68 +98,6 @@ funEWSigma=function(x,lambda,upDown=TRUE){
 
 }
 
-# CVaR====
-
-# Author/Autor: Dr. Oscar V. De la Torre-Torres https://oscardelatorretorres.com
-
-# CVaR v 1.0: 2024-09-03
-
-# This function estimates CVaR, given an estimated standard deviations vector and a confidence interval
-# one
-
-CVaR=function(M,sigma,confidence,pdfFunct,VaRt,tsLength=0){
-  
-# errors:
-switch(pdfFunct,"t"={
-  if (tsLength<1){
-    stop("The length of the time series must (argument tsLength) be greater than zero when pdfFunct is t. \n tsLength is the length of the time series used for degrees of freedom calculation.")
-  }
-}
-)
-
-  cat("\f")
-  print("Estimating CVaR...")
-
-    cat("\f")
-    print(paste0("Estimating with ",pdfFunct,"pdf CVaR at ",confidence*100,"% of confidence..."))
-
-# CVaR estimation===
-
-# CVaR:
-      alphaCVaR=1-confidence
-      #lowZi=-1/sigma
-      pValsSeq=seq(from=0,to=alphaCVaR,by=0.0001)
-      pValsSeq=pValsSeq[-1]
-
-      switch(pdfFunct,
-             "norm"={
-               qpdf=qnorm(pValsSeq,0,1)
-               cvar=mean((qpdf*sigma)*sqrt(VaRt))
-               
-             },
-             "t"={
-               nu=tsLength-1
-               cvar=mean((qt(pValsSeq,nu)*sigma)*sqrt(VaRt))
-             },
-             "ged"={
-               nu=1
-               # q GED estimation:
-               lambda = sqrt(2^(-2/nu) * gamma(1/nu)/gamma(3/nu))
-               q = lambda * (2 * qgamma((abs(2 * pValsSeq - 1)), 1/nu))^(1/nu)
-               gedVal = q * sign(2 * pValsSeq - 1) * 1 + 0
-
-               cvar=mean((gedVal*sigma)*sqrt(VaRt))
-             }
-      )
-  cvar=M*cvar
-
-  cat("\f")
-print(paste0("The CVaR at ",confidence*100,"% of confidence, for an ammount of $",M," is: ",cvar))  
-  # output objects:
-  return(cvar)
-
-}
-
 # VaR====
 
 # Author/Autor: Dr. Oscar V. De la Torre-Torres https://oscardelatorretorres.com
@@ -185,7 +123,7 @@ VaR=function(M,sigma,confidence,pdfFunct,VaRt,tsLength=0){
   cat("\f")
   print(paste0("Estimating with ",pdfFunct,"pdf VaR at ",confidence*100,"% of confidence..."))
   
-# VaR estimation===
+  # VaR estimation===
   
   # VaR:
   alphaVaR=1-confidence
@@ -216,3 +154,73 @@ VaR=function(M,sigma,confidence,pdfFunct,VaRt,tsLength=0){
   return(var)
   
 }
+
+# CVaR====
+
+# Author/Autor: Dr. Oscar V. De la Torre-Torres https://oscardelatorretorres.com
+
+# CVaR v 1.0: 2024-09-03
+
+# This function estimates CVaR, given an estimated standard deviations vector and a confidence interval
+# one
+
+CVaR=function(M,sigma,confidence,pdfFunct,VaRt,tsLength=0){
+  
+# errors:
+switch(pdfFunct,"t"={
+  if (tsLength<1){
+    stop("The length of the time series must (argument tsLength) be greater than zero when pdfFunct is t. \n tsLength is the length of the time series used for degrees of freedom calculation.")
+  }
+}
+)
+
+  cat("\f")
+  print("Estimating CVaR...")
+
+  cat("\f")
+  print(paste0("Estimating with ",pdfFunct,"pdf CVaR at ",confidence*100,"% of confidence..."))
+
+  cvarV=rep(NA,length(sigma))
+  
+
+# CVaR estimation===
+
+  for (a in 1:length(sigma)){  
+# CVaR:
+      alphaCVaR=1-confidence
+      #lowZi=-1/sigma
+      pValsSeq=seq(from=0,to=alphaCVaR,by=0.0001)
+      pValsSeq=pValsSeq[-1]
+
+      switch(pdfFunct,
+             "norm"={
+               qpdf=qnorm(pValsSeq,0,1)
+               cvar=mean((qpdf*sigma[a])*sqrt(VaRt))
+               
+             },
+             "t"={
+               nu=tsLength-1
+               cvar=mean((qt(pValsSeq,nu)*sigma[a])*sqrt(VaRt))
+             },
+             "ged"={
+               nu=1
+               # q GED estimation:
+               lambda = sqrt(2^(-2/nu) * gamma(1/nu)/gamma(3/nu))
+               q = lambda * (2 * qgamma((abs(2 * pValsSeq - 1)), 1/nu))^(1/nu)
+               gedVal = q * sign(2 * pValsSeq - 1) * 1 + 0
+
+               cvar=mean((gedVal*sigma[a])*sqrt(VaRt))
+             }
+      )
+  # lopp a ends here:    
+  cvarV[a]=M*cvar    
+  }
+
+
+  cat("\f")
+print(paste0("The CVaR at ",confidence*100,"% of confidence, for an ammount of $",M," is: ",cvar))  
+  # output objects:
+  return(cvarV)
+
+}
+
