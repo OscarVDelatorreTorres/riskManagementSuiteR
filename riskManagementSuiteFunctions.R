@@ -233,8 +233,26 @@ print(paste0("The CVaR at ",confidence*100,"% of confidence, for an ammount of $
 # This function estimates the backtest of a VaR model, given the returns of a time series, 
 # the estimated VaR or CVaR, and a binomial confidence interval.
 
-backTest=function(x,riskValues,p){
+backTestBinomial=function(returns,riskValues,alphaVal){
   
-  
-  
+  exceedsTable=data.frame(Returns=returns,
+                          riskMeasure=riskValues)
+  exceedsTable=exceedsTable[which(!is.na(exceedsTable$riskMeasure)),]
+  exceedsTable=exceedsTable[which(exceedsTable$Returns<0),]
+  exceedsTable$exceeds=exceedsTable$Returns<exceedsTable$riskMeasure
+  Statistic=sum(exceedsTable$exceeds)
+  pValue=1-pbinom(Statistic,length(returns),alphaVal)
+  criticalValue=qbinom(1-alphaVal,length(returns),alphaVal)
+  twoSidedCriticalValue=c(qbinom(alphaVal/2,length(returns),alphaVal),
+                          qbinom((1-alphaVal+alphaVal/2),length(returns),alphaVal)
+                          )
+  twoSidedPValue=pbinom(twoSidedCriticalValue[1],length(returns),alphaVal)+
+                (1-pbinom(twoSidedCriticalValue[2],length(returns),alphaVal))
+
+  outObject=list(Statistic=Statistic,
+                 pValue=pValue,
+                 criticalValue=criticalValue,
+                 twoSidedCriticalValue=twoSidedCriticalValue,
+                 twoSidedPValue=twoSidedPValue)
+  return(outObject)
 }
