@@ -157,8 +157,16 @@ confianza=0.95
 # Se calcula el CVaR:
 CVaR(M=1000,sigma=Sigma,confidence=confianza,pdfFunct="t",CVaRt=t,tsLength=100)
 ```
+## backTestBinomial
+
+Esta función sirve para determinar si la medida de riesgo es adecuada al realizar una prueba de backtest con el método de la distribución de probabilidad binomial. Como insumos solo necesita una serie de tiempo de variaciones porcentuales del portafolio o valor al que se le calculará un VaR o CVaR móvin con las funciones VaR o CVaR previamente descritas. También se debe especifirar el nivel de error o significancia $\alpha$ de interés para la prueba. La función regresa el estadístico, que no es más que el conteo de los rendimientos negativos que tienen una magnitud mayor a la del VaR o CVaR estimado para ese periodo.
+
+Se presupone, como se ha comentado, que el conteo de errores está binomialmente distribuido con $1-\alpha$ de probabilidad de éxito.
+
+backTestBinomial=function(returns,riskValues,alphaVal)
 
 ## Control de versiones
 
 - V 1.0. 17 de septiembre de 2024: Se calculan las desviaciones estándar con suavizamiento exponencial y con el modelo GARCH tanto en $t$ como de manera móvil desde $x_{t=v}$ a $x_T$ con $v<T$.
 - V 1.1. 09 de octubre de 2024: Se agregaron las funciones de cálculo del VaR y del CVaR con la media, desviación estándar, nivel de confiaza, periodo de cálculo del VaR o CVaR ($t$) conocidos.
+- V 1.1. 11 de febrero de 2024: Se agregó la funcion backTestBinomial que permite, dada una serie de tiempo de rendimientos de un portafolio y una serie de VaR o CVaR estimados con las funciones correspondietes, determinar si la métrica de riesgo calculada (VaR o CVaR) de manera histórica es adecuada o no para la bondad de ajuste.
