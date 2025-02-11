@@ -4,7 +4,7 @@ source("https://raw.githubusercontent.com/OscarVDelatorreTorres/yahooFinance/mai
 tickerV=c("ALFAA.MX","MSFT","MELI","^MXX")
 deD="2020-01-01"
 hastaD=Sys.Date()
-per="W"
+per="D"
 paridadFX="USDMXN=X"
 convertirFX=c(FALSE,TRUE,TRUE,FALSE)
 
@@ -14,7 +14,23 @@ wi=rep(0.25,4)
 
 portafolioReturns=rowSums(Datos$tablaRendimientosCont[,2:5]*wi)
 
-rollEWSigma98=rollEWSigma(portafolioReturns,lambda=0.98,ventana=50,upDown=TRUE)
+rollEWSigma98=rollEWSigma(portafolioReturns,lambda=0.98,ventana=250,upDown=TRUE)
 t=1
-CVaRs=CVaR(M=100000,sigma=rollEWSigma98,confidence=0.95,pdfFunct="norm",VaRt=1,tsLength=0)
-CVaRRel=CVaRs/100000
+
+CVaRsEWSigma98=CVaR(M=100000,sigma=rollEWSigma98,confidence=0.98,pdfFunct="norm",VaRt=1,tsLength=0)
+CVaRsEWSigma98=CVaRsEWSigma98/100000
+
+rollGARCHGauss=rollGARCH(portafolioReturns,model="sGARCH",LLF="norm",garchOrder=c(1,1),ventana=50,
+                       arma=c(0,0),include.mean = FALSE,upDown=TRUE)
+
+CVaRsGARCHGauss=CVaR(M=100000,sigma=rollGARCHGauss,confidence=0.98,pdfFunct="norm",VaRt=1,tsLength=0)
+CVaRsGARCHGauss=CVaRsGARCHGauss/100000
+
+bacckTestEWSigma98=backTestBinomial(portafolioReturns,rollEWSigma98,0.05)
+bacckTestGARCHGauss=backTestBinomial(portafolioReturns,CVaRsGARCHGauss,0.05)
+
+bacckTestEWSigma98$Statistic
+bacckTestEWSigma98$twoSidedCriticalValue
+
+bacckTestGARCHGauss$Statistic
+bacckTestGARCHGauss$twoSidedCriticalValue

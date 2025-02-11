@@ -239,10 +239,12 @@ backTestBinomial=function(returns,riskValues,alphaVal){
                           riskMeasure=riskValues)
   exceedsTable=exceedsTable[which(!is.na(exceedsTable$riskMeasure)),]
   exceedsTable=exceedsTable[which(exceedsTable$Returns<0),]
-  exceedsTable$exceeds=exceedsTable$Returns<exceedsTable$riskMeasure
+  exceedsTable$exceeds=abs(exceedsTable$Returns)<abs(exceedsTable$riskMeasure)
   Statistic=sum(exceedsTable$exceeds)
   pValue=1-pbinom(Statistic,length(returns),alphaVal)
+  
   criticalValue=qbinom(1-alphaVal,length(returns),alphaVal)
+  
   twoSidedCriticalValue=c(qbinom(alphaVal/2,length(returns),alphaVal),
                           qbinom((1-alphaVal+alphaVal/2),length(returns),alphaVal)
                           )
