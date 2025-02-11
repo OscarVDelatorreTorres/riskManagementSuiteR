@@ -224,3 +224,17 @@ print(paste0("The CVaR at ",confidence*100,"% of confidence, for an ammount of $
 
 }
 
+# backTest====
+
+# Author/Autor: Dr. Oscar V. De la Torre-Torres https://oscardelatorretorres.com
+
+# backTest v 1.0: 2025-02-11
+
+# This function estimates the backtest of a VaR model, given the returns of a time series, 
+# the estimated VaR or CVaR, and a binomial confidence interval.
+
+backTest=function(x,riskValues,p){
+  
+  
+  
+}
