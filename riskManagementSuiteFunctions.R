@@ -235,15 +235,22 @@ print(paste0("The CVaR at ",confidence*100,"% of confidence, for an ammount of $
 
 backTestBinomial=function(returns,riskValues,alphaVal){
   
-  exceedsTable=data.frame(Returns=returns,
-                          riskMeasure=riskValues)
-  exceedsTable=exceedsTable[which(!is.na(exceedsTable$riskMeasure)),]
-  exceedsTable=exceedsTable[which(exceedsTable$Returns<0),]
-  exceedsTable$exceeds=abs(exceedsTable$Returns)<abs(exceedsTable$riskMeasure)
-  Statistic=sum(exceedsTable$exceeds)
-  pValue=1-pbinom(Statistic,length(returns),alphaVal)
+  pBinomial=1-alphaVal
+  nBinomial=length(returns)
+  expectedExceeds=round(nBinomial*(1-alphaVal))
   
-  criticalValue=qbinom(1-alphaVal,length(returns),alphaVal)
+  exceedsTable=data.frame(Returns=returns,
+                          riskMeasure=-riskValues)
+  
+  exceedsTable=exceedsTable[which(!is.na(exceedsTable$riskMeasure)),]
+  exceedsTable=exceedsTable[which(!is.na(exceedsTable$Returns)),]
+  exceedsTable=exceedsTable[which(exceedsTable$Returns<0),]
+  exceedsTable=exceedsTable[which(exceedsTable$Returns<exceedsTable$riskMeasure),]
+  Statistic=nrow(exceedsTable)
+  
+  criticalValue=qbinom(0.95,length(returns),1-alphaVal)
+  pValue=pbinom(Statistic,length(returns),1-alphaVal)
+ 
   
   twoSidedCriticalValue=c(qbinom(alphaVal/2,length(returns),alphaVal),
                           qbinom((1-alphaVal+alphaVal/2),length(returns),alphaVal)
@@ -251,6 +258,8 @@ backTestBinomial=function(returns,riskValues,alphaVal){
   twoSidedPValue=pbinom(twoSidedCriticalValue[1],length(returns),alphaVal)+
                 (1-pbinom(twoSidedCriticalValue[2],length(returns),alphaVal))
 
+  
+# Exit object:
   outObject=list(Statistic=Statistic,
                  pValue=pValue,
                  criticalValue=criticalValue,

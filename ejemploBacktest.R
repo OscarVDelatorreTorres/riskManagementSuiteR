@@ -1,16 +1,17 @@
 source("https://raw.githubusercontent.com/OscarVDelatorreTorres/yahooFinance/main/datosMultiplesYahooFinance.R")
+source("https://raw.githubusercontent.com/OscarVDelatorreTorres/riskManagementSuiteR/refs/heads/main/riskManagementSuiteFunctions.R")
 
 # Ejemplo para descargar los históricos diarios de grupo Alfa (en moneda local), Microsoft en EEUU (convertido a MXN), Mercado Libre en EEUU (convertido a MXN) y el índice S&P/BMV IPC (en moneda local), desde el 1 de enero de 2023 a la fecha actual:
-tickerV=c("ALFAA.MX","MSFT","MELI","^MXX")
-deD="2020-01-01"
-hastaD=Sys.Date()
+tickerV=c("BIMBOA","^MXX")
+deD="2024-12-31"
+hastaD="2023-08-19"
 per="D"
 paridadFX="USDMXN=X"
-convertirFX=c(FALSE,TRUE,TRUE,FALSE)
+convertirFX=rep(FALSE,length(tickerV))
 
 Datos=historico_multiples_precios(tickers=tickerV,de=deD,hasta=hastaD,periodicidad=per,fxRate=paridadFX,whichToFX=convertirFX)
 
-wi=rep(0.25,4)
+wi=rep((1/length(tickerV)),length(tickerV))
 
 portafolioReturns=rowSums(Datos$tablaRendimientosCont[,2:5]*wi)
 
