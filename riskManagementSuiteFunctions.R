@@ -248,7 +248,7 @@ backTestBinomial=function(returns,riskValues,alphaVal){
   exceedsTable=exceedsTable[which(exceedsTable$Returns<exceedsTable$riskMeasure),]
   Statistic=nrow(exceedsTable)
   
-  criticalValue=qbinom(0.95,length(returns),1-alphaVal)
+  criticalValue=qbinom(1-alphaVal,length(returns),alphaVal)
   pValue=pbinom(Statistic,length(returns),1-alphaVal)
  
   
