@@ -224,39 +224,36 @@ switch(pdfFunct,"t"={
 
 }
 
-# backTest====
+# kupiecBackTest====
 
 # Author/Autor: Dr. Oscar V. De la Torre-Torres https://oscardelatorretorres.com
 
-# backTest v 1.0: 2025-02-11
+# kupiecBackTest v 1.0: 2025-02-11
 
 # This function estimates the backtest of a VaR model, given the returns of a time series, 
 # the estimated VaR or CVaR, and a binomial confidence interval.
 
-backTestBinomial=function(returns,riskValues,alphaVal){
-  
+KupiecBackTest=function(returns,riskValues,alphaVal){
+# violations count:  
   pBinomial=1-alphaVal
-  nBinomial=length(returns)
-  expectedExceeds=round(nBinomial*(1-alphaVal))
+  nBinomial=length(returns[which(!is.na(riskValues))])
+  expectedExceeds=round(nBinomial*(alphaVal))
   
   exceedsTable=data.frame(Returns=returns,
-                          riskMeasure=-riskValues)
+                          riskMeasure=riskValues)
   
   exceedsTable=exceedsTable[which(!is.na(exceedsTable$riskMeasure)),]
   exceedsTable=exceedsTable[which(!is.na(exceedsTable$Returns)),]
-  exceedsTable=exceedsTable[which(exceedsTable$Returns<0),]
-  exceedsTable=exceedsTable[which(exceedsTable$Returns<exceedsTable$riskMeasure),]
-  Statistic=nrow(exceedsTable)
   
-  criticalValue=qbinom(1-alphaVal,length(returns),alphaVal)
-  pValue=pbinom(Statistic,length(returns),1-alphaVal)
+  Statistic=length(which(exceedsTable$Returns<exceedsTable$riskMeasure))
+  
+  criticalValue=qbinom(1-alphaVal,length(returns[which(!is.na(riskValues))]),alphaVal)
+  pValue=1-pbinom(Statistic,nBinomial,alphaVal)
  
   
-  twoSidedCriticalValue=c(qbinom(alphaVal/2,length(returns),alphaVal),
-                          qbinom((1-alphaVal+alphaVal/2),length(returns),alphaVal)
+  twoSidedCriticalValue=c(qbinom(alphaVal/2,nBinomial,alphaVal),
+                          qbinom((1-alphaVal+alphaVal/2),nBinomial,alphaVal)
                           )
-  twoSidedPValue=pbinom(twoSidedCriticalValue[1],length(returns),alphaVal)+
-                (1-pbinom(twoSidedCriticalValue[2],length(returns),alphaVal))
 
   
 # Exit object:
@@ -264,6 +261,82 @@ backTestBinomial=function(returns,riskValues,alphaVal){
                  pValue=pValue,
                  criticalValue=criticalValue,
                  twoSidedCriticalValue=twoSidedCriticalValue,
-                 twoSidedPValue=twoSidedPValue)
+                 expectedExceeds=expectedExceeds)
   return(outObject)
 }
+
+# Christoffersen bakctest:
+
+# Author/Autor: Dr. Oscar V. De la Torre-Torres https://oscardelatorretorres.com
+
+# chirstoffersenBackTest v 1.0: 2025-02-24
+
+chirstoffersenBackTest=function(returns,riskValues,alphaVal){
+  
+  # violations count:  
+  pBinomial=1-alphaVal
+  nBinomial=length(returns[which(!is.na(riskValues))])
+  expectedExceeds=round(nBinomial*(alphaVal))
+  
+  exceedsTable=data.frame(Returns=returns,
+                          riskMeasure=riskValues)
+  
+  exceedsTable=exceedsTable[which(!is.na(exceedsTable$riskMeasure)),]
+  exceedsTable=exceedsTable[which(!is.na(exceedsTable$Returns)),]
+  
+  Statistic=length(which(exceedsTable$Returns<exceedsTable$riskMeasure))
+# LRUC of Christoffersen backtest:
+  LRuc=-2*log((1-alphaVal)^(nBinomial-Statistic)*(alphaVal^Statistic))+
+    2*log(((1-(Statistic/nBinomial))^(nBinomial-Statistic))*(Statistic/nBinomial)^Statistic)  
+
+# LRind of Christoffersen backtest:
+
+violId=rep(0,nBinomial)
+violId[which(exceedsTable$Returns<exceedsTable$riskMeasure)]=1
+
+n00=0
+n01=0
+n11=0
+n10=0
+
+for (a in 2:length(violId)){
+  if (violId[a]==0 & violId[a-1]==0){
+    n00=n00+1
+  }
+  if (violId[a]==1 & violId[a-1]==1){
+    n11=n11+1
+  }
+  if (violId[a]==0 & violId[a-1]==1){
+    n10=n10+1
+  }
+  if (violId[a]==1 & violId[a-1]==0){
+    n01=n01+1
+  }  
+}
+
+LRucPValue=pchisq(LRuc,1,lower.tail = FALSE)
+  
+pi01=n01/(n01+n00)
+pi11=n11/(n10+n11)
+pi2=(n01+n11)/(n00+n10+n01+n11)
+
+LRind=-2*log((1-pi2)^(n00+n11)*pi2^(n01+n11))+2*log((1-pi01)^n00*pi01^n01*(1-pi11)^n10*pi11^n11)
+  
+LRindPValue=pchisq(LRind,1,lower.tail = FALSE)
+
+LRcc=LRuc+LRind
+LRccPValue=pchisq(LRcc,2,lower.tail = FALSE)
+
+  # Exit object:
+  outObject=list(Statistic=Statistic,
+                 LRuc=LRuc,
+                 LRind=LRind,
+                 LRcc=LRcc,
+                 LRucPValue=LRucPValue,
+                 LRindPValue=LRindPValue,
+                 LRccPValue=LRccPValue)
+  return(outObject)
+}
+
+
+
