@@ -157,13 +157,26 @@ confianza=0.95
 # Se calcula el CVaR:
 CVaR(M=1000,sigma=Sigma,confidence=confianza,pdfFunct="t",CVaRt=t,tsLength=100)
 ```
-## backTestBinomial
+## Prueba de backtesting de Kupiec: KupiecBackTest
 
-Esta función sirve para determinar si la medida de riesgo es adecuada al realizar una prueba de backtest con el método de la distribución de probabilidad binomial. Como insumos solo necesita una serie de tiempo de variaciones porcentuales del portafolio o valor al que se le calculará un VaR o CVaR móvin con las funciones VaR o CVaR previamente descritas. También se debe especifirar el nivel de error o significancia $\alpha$ de interés para la prueba. La función regresa el estadístico, que no es más que el conteo de los rendimientos negativos que tienen una magnitud mayor a la del VaR o CVaR estimado para ese periodo.
+Esta función sirve para determinar si la medida de riesgo es adecuada al realizar una prueba de backtest con el método de la distribución de probabilidad binomial. Esta prueba se conoce como la prueba de Kupiec. Como insumos solo necesita una serie de tiempo de variaciones porcentuales del portafolio o valor al que se le calculará un VaR o CVaR móvin con las funciones VaR o CVaR previamente descritas. También se debe especifirar el nivel de error o significancia $\alpha$ de interés para la prueba. La función regresa el estadístico, que no es más que el conteo de los rendimientos negativos que tienen una magnitud mayor a la del VaR o CVaR estimado para ese periodo.
 
 Se presupone, como se ha comentado, que el conteo de errores está binomialmente distribuido con $1-\alpha$ de probabilidad de éxito.
+Su sintaxis es:
 
-backTestBinomial=function(returns,riskValues,alphaVal)
+KupiecBackTest(returns,riskValues,alphaVal)
+
+## Prueba de backtesting te Christoffersen: chirstoffersenBackTest
+
+Esta función es análoga a la anterior y requiere los mismos insumos de entrada. La diferencia está en que corre la prueba de Christoffersen, consistente no en un estadístico binomial con su correspondiente valor crítico, dada una probabilidad de $1-\alpha$ de tener errores y un valores esperado $N\cdot(1-\alpha)$ de errores, dado el nivel de confianza $\alpha$ del cálculo del VaR o CVAR. Esta prueba regresa el resultado de 3 pruebas:
+
+1. Que el número de veces que la pérdida observada es mayor al Var o CVaR sea igual al esperado (prueba de kupiec previa) ($LR_{cc}$).
+2. Que la ocurrencia de cada una de las veces que la pérdida es mayor al VaR o CVaRr sean independientes entre sí (no exista alguna forma de autocorrelacion) ($LR_{ind}$).
+3. Que el número de veces en euq la pérdida observada sea mayor a la esperada sea mayor como resultado de la independencia anterior ($LR_{uc}=LR_{cc}+LR_{ind}$).
+   
+Su sintaxis es:
+
+chirstoffersenBackTest(returns,riskValues,alphaVal)
 
 ## Control de versiones
 
